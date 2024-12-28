@@ -25,7 +25,7 @@ public class ReservationRepository(PostgresDbContext context) : IReservationRepo
         return reservation.Id;
     }
 
-    public async Task<Reservation?> GetByIdAsync(Guid reservationId, CancellationToken cancellationToken = default)
+    public async Task<Reservation?> GetById(Guid reservationId, CancellationToken cancellationToken = default)
     {
         return await context.Reservations.FirstOrDefaultAsync(r => r.Id == reservationId, cancellationToken);
     }
@@ -36,8 +36,8 @@ public class ReservationRepository(PostgresDbContext context) : IReservationRepo
         await context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<IEnumerable<Reservation>> GetReservationsAsync(
-        string? spaceId,
+    public async Task<IEnumerable<Reservation>> Get(
+        Guid? spaceId,
         Guid? userId,
         DateTime? startDate,
         DateTime? endDate,
@@ -45,7 +45,7 @@ public class ReservationRepository(PostgresDbContext context) : IReservationRepo
     {
         var query = context.Reservations.AsQueryable();
 
-        if (!string.IsNullOrEmpty(spaceId))
+        if (spaceId.HasValue)
         {
             query = query.Where(r => r.SpaceId == spaceId);
         }

@@ -1,4 +1,5 @@
 using Core.Reservations;
+using Core.Spaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -15,5 +16,7 @@ public class ReservationConfiguration : IEntityTypeConfiguration<Reservation>
 
         builder.Property(t => t.EndDate)
             .HasConversion(d => DateTime.SpecifyKind(d, DateTimeKind.Utc), v => v);
+
+        builder.HasOne<Space>().WithMany().HasForeignKey(r => r.SpaceId);
     }
 }

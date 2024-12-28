@@ -1,6 +1,9 @@
 using Core.Reservations.Create;
 using Core.Reservations.Delete;
 using Core.Reservations.Get;
+using Core.Spaces.Create;
+using Core.Spaces.Delete;
+using Core.Spaces.Get;
 using Core.Users.Login;
 using Core.Users.Register;
 using FluentValidation;
@@ -16,6 +19,8 @@ public static class DependencyInjection
 
         services.AddUserModule();
 
+        services.AddSpaceModule();
+
         services.AddReservationModule();
     }
 
@@ -24,6 +29,15 @@ public static class DependencyInjection
         services.AddScoped<ILoginService, LoginService>();
 
         services.AddScoped<IRegisterUserService, RegisterUserService>();
+    }
+
+    private static void AddSpaceModule(this IServiceCollection services)
+    {
+        services.AddScoped<ICreateSpaceService, CreateSpaceService>();
+
+        services.AddScoped<IDeleteSpaceService, DeleteSpaceService>();
+
+        services.AddScoped<IGetSpacesService, GetSpacesService>();
     }
 
     private static void AddReservationModule(this IServiceCollection services)

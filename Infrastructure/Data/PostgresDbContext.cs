@@ -1,4 +1,5 @@
 using Core.Reservations;
+using Core.Spaces;
 using Core.Users;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,6 +8,7 @@ namespace Infrastructure.Data;
 public sealed class PostgresDbContext(DbContextOptions<PostgresDbContext> options) : DbContext(options)
 {
     public DbSet<User> Users { get; init; }
+    public DbSet<Space> Spaces { get; init; }
     public DbSet<Reservation> Reservations { get; init; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -21,7 +21,7 @@ public class GetReservationsRequest : IEndpoint
     }
 
     private static async Task<IResult> Handle(
-        [FromQuery] string? spaceId,
+        [FromQuery] Guid? spaceId,
         [FromQuery] Guid? userId,
         [FromQuery] DateTime? startDate,
         [FromQuery] DateTime? endDate,

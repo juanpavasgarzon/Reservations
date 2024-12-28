@@ -6,12 +6,12 @@ public interface IReservationRepository
 
     public Task<Guid> Create(Reservation reservation, CancellationToken cancellationToken = default);
 
-    public Task<Reservation?> GetByIdAsync(Guid reservationId, CancellationToken cancellationToken = default);
+    public Task<Reservation?> GetById(Guid reservationId, CancellationToken cancellationToken = default);
 
     public Task Delete(Reservation reservation, CancellationToken cancellationToken = default);
 
-    public Task<IEnumerable<Reservation>> GetReservationsAsync(
-        string? spaceId,
+    public Task<IEnumerable<Reservation>> Get(
+        Guid? spaceId,
         Guid? userId,
         DateTime? startDate,
         DateTime? endDate,

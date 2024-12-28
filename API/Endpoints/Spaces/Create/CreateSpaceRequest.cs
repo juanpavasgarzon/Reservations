@@ -1,21 +1,21 @@
 using API.Extensions;
 using API.Infrastructure;
-using Core.Reservations.Create;
+using Core.Spaces.Create;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
-namespace API.Endpoints.Reservations.Create;
+namespace API.Endpoints.Spaces.Create;
 
-internal sealed class CreateReservationRequest : IEndpoint
+internal sealed class CreateSpaceRequest : IEndpoint
 {
-    public sealed record Request(Guid SpaceId, DateTime StartDate, DateTime EndDate);
+    public sealed record Request(string Name, string? Description = default);
 
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("reservations", Handle)
-            .WithTags(Tags.Reservations)
-            .WithSummary("Create a new reservation")
-            .WithDescription("Creates a reservation for a specific space and time period.")
+        app.MapPost("spaces", Handle)
+            .WithTags(Tags.Spaces)
+            .WithSummary("Create a new space")
+            .WithDescription("Creates a space for a specific space and time period.")
             .Produces<Guid>()
             .Produces<BadRequestResult>(400)
             .Produces<ConflictResult>(409)
@@ -25,7 +25,7 @@ internal sealed class CreateReservationRequest : IEndpoint
     private static async Task<IResult> Handle(
         Request request,
         IValidator<Request> validator,
-        ICreateReservationService service,
+        ICreateSpaceService service,
         CancellationToken cancellationToken)
     {
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
@@ -35,7 +35,7 @@ internal sealed class CreateReservationRequest : IEndpoint
             return Results.BadRequest(validationResult.Errors);
         }
 
-        var result = await service.Handle(request.SpaceId, request.StartDate, request.EndDate, cancellationToken);
+        var result = await service.Handle(request.Name, request.Description, cancellationToken);
 
         return result.Match(Results.Ok, CustomResults.Problem);
     }

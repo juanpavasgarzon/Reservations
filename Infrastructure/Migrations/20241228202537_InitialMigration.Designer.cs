@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(PostgresDbContext))]
-    [Migration("20241228073249_DateKindMigration")]
-    partial class DateKindMigration
+    [Migration("20241228202537_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,9 +37,8 @@ namespace Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("end_date");
 
-                    b.Property<string>("SpaceId")
-                        .IsRequired()
-                        .HasColumnType("text")
+                    b.Property<Guid>("SpaceId")
+                        .HasColumnType("uuid")
                         .HasColumnName("space_id");
 
                     b.Property<DateTime>("StartDate")
@@ -56,7 +55,39 @@ namespace Infrastructure.Migrations
                     b.HasIndex("Id")
                         .HasDatabaseName("ix_reservations_id");
 
+                    b.HasIndex("SpaceId")
+                        .HasDatabaseName("ix_reservations_space_id");
+
                     b.ToTable("reservations", "public");
+                });
+
+            modelBuilder.Entity("Core.Spaces.Space", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.HasKey("Id")
+                        .HasName("pk_spaces");
+
+                    b.HasIndex("Id")
+                        .HasDatabaseName("ix_spaces_id");
+
+                    b.HasIndex("Name")
+                        .IsUnique()
+                        .HasDatabaseName("ix_spaces_name");
+
+                    b.ToTable("spaces", "public");
                 });
 
             modelBuilder.Entity("Core.Users.User", b =>
@@ -94,6 +125,16 @@ namespace Infrastructure.Migrations
                         .HasDatabaseName("ix_users_email");
 
                     b.ToTable("users", "public");
+                });
+
+            modelBuilder.Entity("Core.Reservations.Reservation", b =>
+                {
+                    b.HasOne("Core.Spaces.Space", null)
+                        .WithMany()
+                        .HasForeignKey("SpaceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_reservations_spaces_space_id");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,10 +1,12 @@
 using System.Text;
 using Core.Authentication;
 using Core.Reservations;
+using Core.Spaces;
 using Core.Users;
 using Infrastructure.Authentication;
 using Infrastructure.Data;
 using Infrastructure.Data.Reservations;
+using Infrastructure.Data.Spaces;
 using Infrastructure.Data.Users;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -33,6 +35,8 @@ public static class DependencyInjection
     private static void AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IUserRepository, UserRepository>();
+
+        services.AddScoped<ISpaceRepository, SpaceRepository>();
 
         services.AddScoped<IReservationRepository, ReservationRepository>();
     }

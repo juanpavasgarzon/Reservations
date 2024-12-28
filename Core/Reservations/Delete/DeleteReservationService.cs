@@ -10,7 +10,7 @@ internal sealed class DeleteReservationService(
 {
     public async Task<Result> Handle(Guid reservationId, CancellationToken cancellationToken = default)
     {
-        var reservation = await reservationRepository.GetByIdAsync(reservationId, cancellationToken);
+        var reservation = await reservationRepository.GetById(reservationId, cancellationToken);
 
         if (reservation is null)
         {
