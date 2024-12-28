@@ -1,0 +1,47 @@
+@API_HostAddress = http://localhost:5223
+
+###
+
+POST {{API_HostAddress}}/users/register
+Content-Type: application/json
+Accept: application/json
+
+{
+  "email": "newuser@example.com",
+  "firstName": "John",
+  "lastName": "Doe",
+  "password": "SecurePassword123"
+}
+
+###
+
+POST {{API_HostAddress}}/users/login
+Content-Type: application/json
+Accept: application/json
+
+{
+  "email": "newuser@example.com",
+  "password": "SecurePassword123"
+}
+
+###
+
+GET {{API_HostAddress}}/reservations?spaceId=<space_id>&userId=<user_id>&startDate=2024-01-01&endDate=2024-01-02
+Accept: application/json
+
+###
+
+POST {{API_HostAddress}}/reservations
+Content-Type: application/json
+Accept: application/json
+
+{
+  "spaceId": "<space_id>",
+  "startDate": "2024-01-01T09:00:00Z",
+  "endDate": "2024-01-01T17:00:00Z"
+}
+
+###
+
+DELETE {{API_HostAddress}}/reservations/<reservation_id>
+Accept: application/json
