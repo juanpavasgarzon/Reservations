@@ -6,8 +6,8 @@ internal sealed class GetSpacesService(ISpaceRepository spaceRepository) : IGetS
 {
     public async Task<Result<IEnumerable<Space>>> Handle(CancellationToken cancellationToken = default)
     {
-        var reservations = await spaceRepository.Get(cancellationToken);
+        var spaces = await spaceRepository.Get(cancellationToken);
 
-        return Result.Success(reservations);
+        return Result.Success(spaces);
     }
 }

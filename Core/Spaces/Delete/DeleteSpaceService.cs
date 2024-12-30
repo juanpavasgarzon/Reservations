@@ -1,19 +1,23 @@
+using Core.Reservations;
 using Shared;
 
 namespace Core.Spaces.Delete;
 
-internal sealed class DeleteSpaceService(ISpaceRepository spaceRepository) : IDeleteSpaceService
+internal sealed class DeleteSpaceService(
+    ISpaceRepository spaceRepository,
+    IReservationRepository reservationRepository
+) : IDeleteSpaceService
 {
     public async Task<Result> Handle(Guid spaceId, CancellationToken cancellationToken = default)
     {
-        var reservation = await spaceRepository.GetById(spaceId, cancellationToken);
+        var space = await spaceRepository.GetById(spaceId, cancellationToken);
 
-        if (reservation is null)
+        if (space is null)
         {
             return Result.Failure(SpaceErrors.NotFound);
         }
 
-        await spaceRepository.Delete(reservation, cancellationToken);
+        await spaceRepository.Delete(space, cancellationToken);
 
         return Result.Success();
     }
