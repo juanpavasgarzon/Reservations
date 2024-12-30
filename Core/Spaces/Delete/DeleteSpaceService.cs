@@ -3,10 +3,7 @@ using Shared;
 
 namespace Core.Spaces.Delete;
 
-internal sealed class DeleteSpaceService(
-    ISpaceRepository spaceRepository,
-    IReservationRepository reservationRepository
-) : IDeleteSpaceService
+internal sealed class DeleteSpaceService(ISpaceRepository spaceRepository) : IDeleteSpaceService
 {
     public async Task<Result> Handle(Guid spaceId, CancellationToken cancellationToken = default)
     {
